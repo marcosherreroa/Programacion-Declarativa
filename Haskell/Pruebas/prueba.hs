@@ -1,0 +1,1 @@
+f x y z = [True && y, x == z]

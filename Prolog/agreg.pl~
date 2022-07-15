@@ -1,0 +1,3 @@
+
+evLista(_,[]) :- !.
+evLista(P,[X|Xs]) :- P(X), evLista(P,Xs).

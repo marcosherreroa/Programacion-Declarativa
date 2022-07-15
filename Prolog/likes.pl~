@@ -1,0 +1,3 @@
+likes(sam,apples).
+likes(sam,dogs).
+likes(sam,cats).

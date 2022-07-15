@@ -1,0 +1,55 @@
+suma(A,B,C) :- number(A), number(B), C is A+B.
+suma(A,B,C) :- number(A), number(C), B is C-A.
+suma(A,B,C) :- number(B), number(C), A is C-B.
+
+sumanum([],0).
+sumanum([X|Xs],Z) :- number(X), !, sumanum(Xs,Z1), Z is X+Z1.
+sumanum([_|Xs],Z) :- sumanum(Xs,Z).
+
+listapos([],[]).
+listapos([X|Xs],[X|Zs]) :- X > 0, listapos(Xs,Zs).
+listapos([X|Xs],Zs) :- X =< 0, listapos(Xs,Zs).
+
+particion(_,[],[],[]).
+particion(X,[Y|Xs], [Y|Men], May) :- Y =< X, particion(X,Xs, Men,May).
+particion(X,[Y|Xs], Men, [Y|May]) :- Y > X, particion(X,Xs, Men, May).
+
+quicksort([],[]).
+quicksort([X|Xs], Zs) :- particion(X,Xs,Men,May),
+                     quicksort(Men,MenOrd),
+                     quicksort(May,MayOrd),
+                     append(MenOrd,[X|MayOrd], Zs).
+
+
+term_atomic_list([],[]).
+term_atomic_list([T|Ts], [T|Zs]) :- atomic(T),
+                                    term_atomic_list(Ts,Zs).
+
+term_atomic_list([T|Ts], Zs) :- var(T),
+                                term_atomic_list(Ts,Zs).
+
+term_atomic_list([T|Ts], Zs) :- nonvar(T),
+                               T =.. [_|Args],
+                               append(Args,Ts,Ts1),
+                               term_atomic_list(Ts1,Zs).
+
+term_atomic(T,Zs) :- term_atomic_list([T],Zs).
+
+
+subterm_list(T,[T|_]).
+
+subterm_list(T,[U|Us]) :- atomic(U),
+                          subterm_list(T,Us).
+
+subterm_list(T,[U|Us]) :- U =.. [_|Args],
+                          append(Args,Us,Us1),
+                          subterm_list(T,Us1).
+
+subterm(T,U) :- subterm_list(T,[U]).
+
+
+
+
+
+
+
